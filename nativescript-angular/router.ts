@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from "@angular/core";
+import { NgModule, ModuleWithProviders, NO_ERRORS_SCHEMA } from "@angular/core";
 import { RouterModule, Routes, ExtraOptions } from '@angular/router';
 import { LocationStrategy, PlatformLocation } from '@angular/common';
 import { NSRouterLink } from './router/ns-router-link';
@@ -10,9 +10,10 @@ import { RouterExtensions } from './router/router-extensions';
 export { routerTraceCategory } from "./trace";
 export { PageRoute } from './router/page-router-outlet';
 export { RouterExtensions } from './router/router-extensions';
+import { NativeScriptModule } from "./nativescript.module";
 
 //TODO: delete after porting router examples.
-export var nsProvideRouter: any = function(){};
+export var nsProvideRouter: any = function () { };
 
 @NgModule({
     declarations: [
@@ -22,20 +23,22 @@ export var nsProvideRouter: any = function(){};
     ],
     providers: [
         NSLocationStrategy,
-        {provide: LocationStrategy, useExisting: NSLocationStrategy},
+        { provide: LocationStrategy, useExisting: NSLocationStrategy },
         NativescriptPlatformLocation,
-        {provide: PlatformLocation, useClass: NativescriptPlatformLocation},
+        { provide: PlatformLocation, useClass: NativescriptPlatformLocation },
         RouterExtensions
     ],
     imports: [
-        RouterModule
+        RouterModule,
+        NativeScriptModule
     ],
     exports: [
         RouterModule,
         NSRouterLink,
         NSRouterLinkActive,
         PageRouterOutlet
-    ]
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class NativeScriptRouterModule {
     static forRoot(routes: Routes, config?: ExtraOptions): ModuleWithProviders {
@@ -44,5 +47,5 @@ export class NativeScriptRouterModule {
 
     static forChild(routes: Routes): ModuleWithProviders {
         return RouterModule.forChild(routes);
-    }                      
+    }
 }
